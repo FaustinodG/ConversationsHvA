@@ -3618,6 +3618,7 @@ public class XmppConnectionService extends Service {
 	public void resendFailedMessages(final Message message) {
 		final Collection<Message> messages = new ArrayList<>();
 		Message current = message;
+		//Get all the unsent messages
 		while (current.getStatus() == Message.STATUS_SEND_FAILED) {
 			messages.add(current);
 			if (current.mergeable(current.next())) {
@@ -3634,6 +3635,7 @@ public class XmppConnectionService extends Service {
 		if (message.getConversation() instanceof Conversation) {
 			((Conversation) message.getConversation()).sort();
 		}
+		//Update the ui to get new message
 		updateConversationUi();
 	}
 
@@ -3645,11 +3647,15 @@ public class XmppConnectionService extends Service {
 			clearDate = latestMessage.getTimeSent() + 1000;
 			reference = latestMessage.getServerMsgId();
 		} else {
+			//Set the clear date to current time
 			clearDate = System.currentTimeMillis();
 			reference = null;
 		}
+		//Clear all the messages
 		conversation.clearMessages();
+		//Send notification that messages left the server
 		conversation.setHasMessagesLeftOnServer(false); //avoid messages getting loaded through mam
+		//Set the last clear history
 		conversation.setLastClearHistory(clearDate, reference);
 		Runnable runnable = () -> {
 			databaseBackend.deleteMessagesInConversation(conversation);
@@ -3839,7 +3845,9 @@ public class XmppConnectionService extends Service {
 	}
 
 	public void saveConversationAsBookmark(Conversation conversation, String name) {
+		//Get account from conversation
 		Account account = conversation.getAccount();
+		//Create a new bookmark
 		Bookmark bookmark = new Bookmark(account, conversation.getJid().asBareJid());
 		if (!conversation.getJid().isBareJid()) {
 			bookmark.setNick(conversation.getJid().getResource());
@@ -3847,8 +3855,10 @@ public class XmppConnectionService extends Service {
 		if (!TextUtils.isEmpty(name)) {
 			bookmark.setBookmarkName(name);
 		}
+		//Set bookmark to autojoin
 		bookmark.setAutojoin(getPreferences().getBoolean("autojoin", getResources().getBoolean(R.bool.autojoin)));
 		account.getBookmarks().add(bookmark);
+		//Push bookmark to account
 		pushBookmarks(account);
 		bookmark.setConversation(conversation);
 	}

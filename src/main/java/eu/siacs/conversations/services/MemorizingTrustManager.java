@@ -185,21 +185,6 @@ public class MemorizingTrustManager {
 	}
 
 
-	/**
-	 * Binds an Activity to the MTM for displaying the query dialog.
-	 *
-	 * This is useful if your connection is run from a service that is
-	 * triggered by user interaction -- in such cases the activity is
-	 * visible and the user tends to ignore the service notification.
-	 *
-	 * You should never have a hidden activity bound to MTM! Use this
-	 * function in onResume() and @see unbindDisplayActivity in onPause().
-	 *
-	 * @param act Activity to be bound
-	 */
-	public void bindDisplayActivity(AppCompatActivity act) {
-		foregroundAct = act;
-	}
 
 	/**
 	 * Removes an Activity from the MTM display stack.
@@ -215,19 +200,6 @@ public class MemorizingTrustManager {
 			foregroundAct = null;
 	}
 
-	/**
-	 * Changes the path for the KeyStore file.
-	 *
-	 * The actual filename relative to the app's directory will be
-	 * <code>app_<i>dirname</i>/<i>filename</i></code>.
-	 *
-	 * @param dirname directory to store the KeyStore.
-	 * @param filename file name for the KeyStore.
-	 */
-	public static void setKeyStoreFile(String dirname, String filename) {
-		KEYSTORE_DIR = dirname;
-		KEYSTORE_FILE = filename;
-	}
 
 	/**
 	 * Get a list of all certificate aliases stored in MTM.
@@ -243,21 +215,7 @@ public class MemorizingTrustManager {
 		}
 	}
 
-	/**
-	 * Get a certificate for a given alias.
-	 *
-	 * @param alias the certificate's alias as returned by {@link #getCertificates()}.
-	 *
-	 * @return the certificate associated with the alias or <tt>null</tt> if none found.
-	 */
-	public Certificate getCertificate(String alias) {
-		try {
-			return appKeyStore.getCertificate(alias);
-		} catch (KeyStoreException e) {
-			// this should never happen, however...
-			throw new RuntimeException(e);
-		}
-	}
+
 
 	/**
 	 * Removes the given certificate from MTMs key store.

@@ -77,9 +77,6 @@ public class FileBackend {
         this.mXmppConnectionService = service;
     }
 
-    private static boolean isInDirectoryThatShouldNotBeScanned(Context context, File file) {
-        return isInDirectoryThatShouldNotBeScanned(context, file.getAbsolutePath());
-    }
 
     public static boolean isInDirectoryThatShouldNotBeScanned(Context context, String path) {
         for (String type : new String[]{RecordingActivity.STORAGE_DIRECTORY_TYPE_NAME, "Files"}) {
