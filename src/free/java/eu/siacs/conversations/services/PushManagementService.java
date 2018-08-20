@@ -22,7 +22,4 @@ public class PushManagementService {
 		return true;
 	}
 
-	public boolean availableAndUseful(Account account) {
-		return false;
-	}
 }

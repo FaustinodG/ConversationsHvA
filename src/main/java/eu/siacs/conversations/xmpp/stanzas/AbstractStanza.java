@@ -38,14 +38,6 @@ public class AbstractStanza extends Element {
 			|| from.equals(account.getJid());
 	}
 
-	public boolean toServer(final Account account) {
-		final Jid to = getTo();
-		return to == null
-			|| to.equals(Jid.of(account.getServer()))
-			|| to.equals(account.getJid().asBareJid())
-			|| to.equals(account.getJid());
-	}
-
 	public boolean fromAccount(final Account account) {
 		final Jid from = getFrom();
 		return from != null && from.asBareJid().equals(account.getJid().asBareJid());
