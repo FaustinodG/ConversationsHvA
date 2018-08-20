@@ -9,13 +9,11 @@ import org.mockito.Mockito;
 import org.mockito.junit.MockitoJUnit;
 import org.mockito.junit.MockitoRule;
 
-import java.io.File;
-import java.io.IOException;
-
 import eu.siacs.conversations.entities.Conversation;
 import eu.siacs.conversations.services.XmppConnectionService;
+import static org.junit.Assert.*;
 
-public class FileSendTest {
+public class SendLocationTest {
 
     @Mock
     private XmppConnectionService mXmppConnectionService;
@@ -36,22 +34,14 @@ public class FileSendTest {
     );
 
     @Test
-    public void sendFile() throws IOException {
-        //User choses a file
-        File image = File.createTempFile( "asvfile", ".jpg");
-        //The file gets added to the conversation
-        mXmppConnectionService.attachImageToConversation(
+    public void testShareLocation() {
+        String currentLocation = "geo:1.23,123.4";
+        mXmppConnectionService.attachLocationToConversation(
                 conversation,
-                Uri.parse(image.toURI().toString()),
+                Uri.parse(currentLocation),
                 null
         );
-        Mockito.verify(mXmppConnectionService,
-                Mockito.times(1)).attachImageToConversation(
-                conversation,
-                Uri.parse(image.toURI().toString()),
-                null
-        );
+
+        assertTrue(conversation.getLatestMessage().isGeoUri());
     }
-
-
 }

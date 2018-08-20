@@ -3,8 +3,8 @@ package eu.siacs.conversations;
 import android.net.Uri;
 
 import org.junit.Rule;
-import org.junit.Test;
 import org.mockito.Mock;
+import org.junit.Test;
 import org.mockito.Mockito;
 import org.mockito.junit.MockitoJUnit;
 import org.mockito.junit.MockitoRule;
@@ -15,7 +15,9 @@ import java.io.IOException;
 import eu.siacs.conversations.entities.Conversation;
 import eu.siacs.conversations.services.XmppConnectionService;
 
-public class FileSendTest {
+public class SendVoiceTest {
+
+
 
     @Mock
     private XmppConnectionService mXmppConnectionService;
@@ -36,22 +38,21 @@ public class FileSendTest {
     );
 
     @Test
-    public void sendFile() throws IOException {
-        //User choses a file
-        File image = File.createTempFile( "asvfile", ".jpg");
-        //The file gets added to the conversation
-        mXmppConnectionService.attachImageToConversation(
+    public void testSendVoiceMessages() throws IOException {
+        File voiceMessage = File.createTempFile( "message", ".mp3");
+        mXmppConnectionService.attachFileToConversation(
                 conversation,
-                Uri.parse(image.toURI().toString()),
+                Uri.parse(voiceMessage.toURI().toString()),
+                null,
                 null
         );
         Mockito.verify(mXmppConnectionService,
-                Mockito.times(1)).attachImageToConversation(
+                Mockito.times(1)).attachFileToConversation(
                 conversation,
-                Uri.parse(image.toURI().toString()),
+                Uri.parse(voiceMessage.toURI().toString()),
+                null,
                 null
         );
     }
-
 
 }
